@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"components/ui/tarjetaPublicar.tsx -> @/components/ui/alert-dialog\":{\"id\":\"components/ui/tarjetaPublicar.tsx -> @/components/ui/alert-dialog\",\"files\":[]}}"

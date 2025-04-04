@@ -1,0 +1,5 @@
+{
+  "/medio-fisico/page": "app/medio-fisico/page.js",
+  "/page": "app/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
+}
