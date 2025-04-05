@@ -286,15 +286,17 @@ const filteredData = graficoData.filter((item) => {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                //console.log(value);
-                const date = new Date(value)
-                return date.toLocaleDateString("es-CL", {
-                  month: "short",
-                  day: "numeric",
-                  timeZone: 'Europe/Madrid'
-                })
+                  const parts = value.split('/');
+                  // ¡Ojo! El mes en JavaScript es 0-indexado
+                  const date = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                  return date.toLocaleDateString("es-CL", {
+                      month: "short",
+                      day: "numeric",
+                      timeZone: 'Europe/Madrid' // Manteniendo la zona horaria si es necesaria
+                  });
               }}
-            />
+              />
+
            <ChartTooltip
             cursor={false}
             content={
