@@ -4,9 +4,9 @@ const nextConfig = {
  images: {
    remotePatterns: [
       {
-        protocol: 'http', // o 'https', dependiendo de tu Strapi
-        hostname: 'localhost',
-        port: '1337', // Si tu Strapi usa un puerto específico
+        protocol: 'https', // o 'https', dependiendo de tu Strapi
+        hostname: 'webstrapi2-acfcc0aafycue7bh.centralus-01.azurewebsites.net',
+        port: '', // Si tu Strapi usa un puerto específico
         pathname: '/uploads/**', // Permite todas las rutas dentro de /uploads/
       },
       // Si tienes un dominio de producción, agrega otro objeto aquí
