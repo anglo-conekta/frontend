@@ -24,7 +24,7 @@ return {
       fult_dat: data.data.fecha_ult_data,
     },
   };
-  console.log(fechaultima);
+  //console.log(fechaultima);
 }
 
 const AlertDialog = dynamic(() => import('@/components/ui/alert-dialog').then((mod) => mod.AlertDialog), { ssr: false });
