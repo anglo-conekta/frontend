@@ -125,8 +125,8 @@ async function getGraficoData() {
         for (let i = 1; i <= 30; i++) {
             const diaKey = `dia${i}`;
             const dataKey = `data${i}`;
-            const dia = (dataArsenico1.arsenico1 as string)[diaKey];
-            const nivelStr = (dataArsenico1.arsenico1 as string)[dataKey];
+            const dia = (dataArsenico1.arsenico1 as any)[diaKey];
+            const nivelStr = (dataArsenico1.arsenico1 as any)[dataKey];
 
             if (dia && nivelStr !== undefined && nivelStr !== null) {
                 const nivel = parseFloat(nivelStr);
