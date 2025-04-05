@@ -312,7 +312,7 @@ export function ChartArsenico1() {
 
   const filteredData = graficoData.filter((item) => {
     const date = new Date(item.date);
-    console.log("Fecha creada:", date.toISOString());
+    //console.log("Fecha creada:", date.toISOString());
    // console.log(date);
     const referenceDate = new Date("2024-07-01");
     let daysToSubtract = 90;
