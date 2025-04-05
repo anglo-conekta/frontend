@@ -71,7 +71,12 @@ export default async function Hero() {
   const imagen1url= await getImagen1();
   const baseUrlimagen1 = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
   const pathimagen1 = imagen1url;
-  const urlimagen1 = `${baseUrlimagen1}${pathimagen1}`;
+  //const urlimagen1 = `${baseUrlimagen1}${pathimagen1}`;
+ // Elimina la barra inicial de la ruta de la imagen si existe
+  const pathSinBarra = pathimagen1.replace(/^\//, '');
+  const urlimagen1 = `${baseUrlimagen1}/${pathSinBarra}`;
+
+
 
 
   return (
