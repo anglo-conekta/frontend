@@ -70,11 +70,22 @@ export default async function Hero() {
   const txttitulo2= await getTitulo2();
   const imagen1url= await getImagen1();
   const baseUrlimagen1 = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
-  const pathimagen1 = imagen1url;
+  //const pathimagen1 = imagen1url;
   //const urlimagen1 = `${baseUrlimagen1}${pathimagen1}`;
  // Elimina la barra inicial de la ruta de la imagen si existe
-  const pathSinBarra = pathimagen1.replace(/^\//, '');
-  const urlimagen1 = `${baseUrlimagen1}/${pathSinBarra}`;
+  //const pathSinBarra = pathimagen1.replace(/^\//, '');
+  //const urlimagen1 = `${baseUrlimagen1}/${pathSinBarra}`;
+
+  let urlimagen1 = '';
+  if (imagen1url && baseUrl) {
+    // Elimina barras redundantes de ambos extremos antes de unirlos
+    const trimmedBaseUrl = baseUrl.replace(/\/$/, '');
+    const trimmedImageUrl = imagen1url.replace(/^\//, '');
+    urlimagen1 = `${trimmedBaseUrl}/${trimmedImageUrl}`;
+  } else if (imagen1url) {
+    urlimagen1 = imagen1url;
+  }
+
 
 
 
