@@ -1,6 +1,6 @@
 "use client"
 import { BellRing, Check } from "lucide-react"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -17,14 +17,12 @@ async function getUltimaPublica() {
   const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error("Failed to fetch notifications");
   const data = await res.json();
-  //return data; // Asumimos que 'data' es el array de notificaciones
-return {
+  return {
     fechaultima: {
       fult: data.data.fecha_ult,
       fult_dat: data.data.fecha_ult_data,
     },
   };
-  //console.log(fechaultima);
 }
 
 const AlertDialog = dynamic(() => import('@/components/ui/alert-dialog').then((mod) => mod.AlertDialog), { ssr: false });
@@ -40,56 +38,56 @@ export function CardDemo({ className, ...props }: CardProps) {
   const [apiNotifications, setApiNotifications] = useState<Notification[]>([]);
   const [fechaultima, setFechaultima] = useState<{ fechaultima: { fult: string; fult_dat: any } } | null>(null);
   const [diasPendientes, setDiasPendientes] = useState<number | null>(null);
+  const [isPublishing, setIsPublishing] = useState(false); // Estado para indicar si se está publicando
 
-    async function loadNotifications() {
-      try {
-        const dataFromApi = await getUltimaPublica();
-        // Formatea los datos para que coincidan con { title: string, description: string }
-        // Asumimos que la API devuelve un objeto con una propiedad 'fechaultima' que contiene los datos
-        if (dataFromApi?.fechaultima) {
-          const formattedNotifications = [
-            {
-              title: "Fecha última publicación",
-              description: dataFromApi.fechaultima.fult,
-            },
-            {
-              title: "Último dato recibido",
-              description: dataFromApi.fechaultima.fult_dat,
-            },
-          ];
-          setApiNotifications(formattedNotifications);
-        }
-      } catch (error) {
-        console.error("Error al cargar las notificaciones:", error);
+  const loadNotifications = useCallback(async () => {
+    try {
+      const dataFromApi = await getUltimaPublica();
+      if (dataFromApi?.fechaultima) {
+        const formattedNotifications = [
+          {
+            title: "Fecha última publicación",
+            description: dataFromApi.fechaultima.fult,
+          },
+          {
+            title: "Último dato recibido",
+            description: dataFromApi.fechaultima.fult_dat,
+          },
+        ];
+        setApiNotifications(formattedNotifications);
+        setFechaultima(dataFromApi); // Actualizar el estado de fechaultima también
       }
+    } catch (error) {
+      console.error("Error al cargar las notificaciones:", error);
     }
-
-  useEffect(() => {
-    loadNotifications(); // Asegúrate de llamar a la función aquí
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
+    loadNotifications();
+  }, [loadNotifications]);
+
+  useEffect(() => {
     async function calculadiff() {
-        try {
-            const dataFromApi = await getUltimaPublica();
-            const fechaPublicacion = new Date(dataFromApi.fechaultima.fult);
-            const hoy = new Date();
-            const diferenciaEnMilisegundos = hoy.getTime() - fechaPublicacion.getTime();
-            const milisegundosEnUnDia = 1000 * 60 * 60 * 24;
-            const dias = Math.floor(diferenciaEnMilisegundos / milisegundosEnUnDia);
-            setDiasPendientes(dias);
-        } catch (error) {
-            console.error("Error al cargar las diferencias de fechas:", error);
+      try {
+        if (fechaultima?.fechaultima?.fult) {
+          const fechaPublicacion = new Date(fechaultima.fechaultima.fult);
+          const hoy = new Date();
+          const diferenciaEnMilisegundos = hoy.getTime() - fechaPublicacion.getTime();
+          const milisegundosEnUnDia = 1000 * 60 * 60 * 24;
+          const dias = Math.floor(diferenciaEnMilisegundos / milisegundosEnUnDia);
+          setDiasPendientes(dias);
         }
+      } catch (error) {
+        console.error("Error al cargar las diferencias de fechas:", error);
+      }
     }
+    calculadiff();
+  }, [fechaultima]); // Se ejecuta cada vez que fechaultima cambia
 
-    calculadiff(); // Llamamos a la función aquí dentro del efecto
-
-}, [fechaultima]); // Se ejecuta cada vez que fechaultima cambia
-
-    const handlePublicarClick = async () => {
+  const handlePublicarClick = async () => {
+    setIsPublishing(true);
     console.log('Se presionó Publicar');
-    const respuestaguardar = {"data": {"fecha_ult": new Date().toISOString().split('T')[0]}}; // Guarda la fecha actual en formato YYYY-MM-DD
+    const respuestaguardar = {"data": {"fecha_ult": new Date().toISOString().split('T')[0]}};
     const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
     const path = `/api/dboard-public`;
     const url = new URL(path, baseUrl);
@@ -105,14 +103,16 @@ useEffect(() => {
 
       if (response.ok) {
         console.log('Respuesta guardada exitosamente');
-        // Puedes recargar las notificaciones después de publicar si es necesario
-        loadNotifications();
+        // Recargar las notificaciones después de publicar
+        await loadNotifications();
       } else {
         console.error('Error al guardar la respuesta:', response.status);
         // Maneja el error
       }
     } catch (error) {
       console.error('Error de red:', error);
+    } finally {
+      setIsPublishing(false); // Asegurarse de que el estado de publicación se restablezca
     }
   };
 
@@ -181,8 +181,8 @@ useEffect(() => {
 
       <CardFooter>
         <AlertDialog>
-          <AlertDialogTrigger><Button className="w-full">
-            <Check /> Publicar
+          <AlertDialogTrigger><Button className="w-full" disabled={isPublishing}>
+            <Check /> {isPublishing ? 'Publicando...' : 'Publicar'}
           </Button></AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
