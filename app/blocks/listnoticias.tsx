@@ -5,7 +5,7 @@ import qs from "qs";
 
 async function getNoticias() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
-  const path = `/api/calendario`;
+  const path = `/api/inicio-calendario`;
 
   const url = new URL(path, baseUrl);
 
