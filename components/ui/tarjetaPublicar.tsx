@@ -41,9 +41,6 @@ export function CardDemo({ className, ...props }: CardProps) {
   const [fechaultima, setFechaultima] = useState<{ fechaultima: { fult: string; fult_dat: any } } | null>(null);
   const [diasPendientes, setDiasPendientes] = useState<number | null>(null);
 
-
-
-  useEffect(() => {
     async function loadNotifications() {
       try {
         const dataFromApi = await getUltimaPublica();
@@ -67,7 +64,8 @@ export function CardDemo({ className, ...props }: CardProps) {
       }
     }
 
-    loadNotifications();
+  useEffect(() => {
+    loadNotifications(); // Asegúrate de llamar a la función aquí
   }, []);
 
 useEffect(() => {
