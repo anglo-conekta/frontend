@@ -96,9 +96,9 @@ export default async function ListNoticias() {
   const pathimagen2 = detallenoticia.noticias.imagen2url; 
   const pathimagen3 = detallenoticia.noticias.imagen3url; 
   const baseUrlimagen = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
-  const urlnotimage1 = `${baseUrlimagen}${pathimagen1}`;
-  const urlnotimage2 = `${baseUrlimagen}${pathimagen2}`;
-  const urlnotimage3 = `${baseUrlimagen}${pathimagen3}`;
+ // const urlnotimage1 = `${baseUrlimagen}${pathimagen1}`;
+ // const urlnotimage2 = `${baseUrlimagen}${pathimagen2}`;
+ // const urlnotimage3 = `${baseUrlimagen}${pathimagen3}`;
   const notifecha1 = detallenoticia.noticias.notifecha1;
   const notifecha2 = detallenoticia.noticias.notifecha2;
   const notifecha3 = detallenoticia.noticias.notifecha3;
@@ -108,6 +108,36 @@ export default async function ListNoticias() {
   const noticia1 = detallenoticia.noticias.noticia1;
   const noticia2 = detallenoticia.noticias.noticia2;
   const noticia3 = detallenoticia.noticias.noticia3;
+
+let urlnotimage1 = '';
+  let urlnotimage2 = '';
+  let urlnotimage3 = '';
+
+  if (pathimagen1 && baseUrlimagen) {
+    const trimmedBaseUrl = baseUrlimagen.replace(/\/$/, '');
+    const trimmedImagePath = pathimagen1.replace(/^\//, '');
+    urlnotimage1 = `${trimmedBaseUrl}/${trimmedImagePath}`;
+  } else if (pathimagen1) {
+    urlnotimage1 = pathimagen1;
+  }
+
+  if (pathimagen2 && baseUrlimagen) {
+    const trimmedBaseUrl = baseUrlimagen.replace(/\/$/, '');
+    const trimmedImagePath = pathimagen2.replace(/^\//, '');
+    urlnotimage2 = `${trimmedBaseUrl}/${trimmedImagePath}`;
+  } else if (pathimagen2) {
+    urlnotimage2 = pathimagen2;
+  }
+
+  if (pathimagen3 && baseUrlimagen) {
+    const trimmedBaseUrl = baseUrlimagen.replace(/\/$/, '');
+    const trimmedImagePath = pathimagen3.replace(/^\//, '');
+    urlnotimage3 = `${trimmedBaseUrl}/${trimmedImagePath}`;
+  } else if (pathimagen3) {
+    urlnotimage3 = pathimagen3;
+  }
+
+
 
   return (
 
