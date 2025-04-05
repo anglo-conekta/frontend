@@ -467,7 +467,12 @@ export function ChartArsenico1() {
                                 startOffset={100}
                               />
                             </ReferenceLine>
-                                      <ReferenceLine x={fec_ultima_publica} stroke="43.3 96.4% 56.3%" strokeWidth={4} label="Sin Publicar" />
+                            <ReferenceLine
+                             x={fec_ultima_publica || undefined}
+                             stroke="43.3 96.4% 56.3%"
+                             strokeWidth={4}
+                             label="Sin Publicar"
+                             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
