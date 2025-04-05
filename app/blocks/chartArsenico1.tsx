@@ -116,7 +116,8 @@ return {
 
 export default async function despliegachart(diaPropiedad: string) {
   const dataArsenico1 = await getChartArsenico1();
-  const valorDeseado = dataArsenico1?.arsenico1?.[diaPropiedad]; // Acceso dinámico a la propiedad
+  //const valorDeseado = dataArsenico1?.arsenico1?.[diaPropiedad]; // Acceso dinámico a la propiedad
+  const valorDeseado = (dataArsenico1?.arsenico1 as any)?.[diaPropiedad];
 
   //console.log(valorDeseado);
   return valorDeseado;
