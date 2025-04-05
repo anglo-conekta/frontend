@@ -29,6 +29,11 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 
+interface GraficoDataItem {
+  date: string;
+  nivel: number;
+}
+
 async function getChartArsenico1() {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:1337";
   const path = `/api/arsenico-data`;
@@ -290,7 +295,8 @@ const chartConfig = {
 
 export function ChartArsenico1() {
   const [timeRange, setTimeRange] = useState("90d");
-  const [graficoData, setGraficoData] = useState([]);
+  const [graficoData, setGraficoData] = useState<GraficoDataItem[]>([]);
+
   const [fec_ultima_publica, setFecUltimaPublica] = useState<string | null>(null);
 
     useEffect(() => {
