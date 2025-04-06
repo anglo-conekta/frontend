@@ -243,7 +243,6 @@ useEffect(() => {
                                 label="Sin Publicar"
                             />
                         )}
-                        />
                     </AreaChart>
                 </ChartContainer>
             </CardContent>
